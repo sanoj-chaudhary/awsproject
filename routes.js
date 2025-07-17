@@ -36,4 +36,8 @@ router.delete('/users/:id', (req, res) => {
     });
 });
 
+router.get('/test', (req, res) => {
+   return res.send('Docker')
+});
+
 module.exports = router;
