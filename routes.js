@@ -37,7 +37,7 @@ router.delete('/users/:id', (req, res) => {
 });
 
 router.get('/test', (req, res) => {
-   return res.send('Docker')
+   return res.send('Server is working')
 });
 
 module.exports = router;
