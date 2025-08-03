@@ -1,6 +1,5 @@
 const mysql = require('mysql2');
 require('dotenv').config();
-console.log(process.env.DB_HOST,"sanoj")
 const connection = mysql.createConnection({
   host: 'database-1.c3omya2ui7ke.eu-north-1.rds.amazonaws.com',
   user: 'admin',
