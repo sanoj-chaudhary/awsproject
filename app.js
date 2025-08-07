@@ -14,9 +14,10 @@ app.use(bodyParser.json({ limit: '5mb' }))
 //   console.log(`[Gateway] ${req.method} ${req.originalUrl}`);
 //   next();
 // });
-
+const os = require('os');
 app.get('/', (req, res) => {
-  res.send('API Gateway is running'); // Basic health check
+  const hostname = os.hostname();
+  res.send(`API Gateway is running on ${hostname}`);
 });
 
 // Test route to confirm gateway is alive
