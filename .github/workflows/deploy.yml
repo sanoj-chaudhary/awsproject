@@ -1,27 +1,23 @@
-name: Deploy Node.js Docker App to AWS
+name: CI/CD Deploy to EC2
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-    - name: Deploy to AWS EC2 via SSH
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USER }}
-        key: ${{ secrets.SERVER_SSH_KEY }}
-        script: |
-          cd /home/ubuntu/awsProject/awsproject
-          git pull origin main
-          docker build -t awsproject .
-          docker stop awsproject || true
-          docker rm awsproject || true
-          docker run -d -p 3000:3000 --name awsproject awsproject
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@ec2-13-60-235-7.eu-north-1.compute.amazonaws.com 'bash /home/ubuntu/deploy.sh'
