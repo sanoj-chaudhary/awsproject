@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
   const hostname = os.hostname();
   res.send(`API Gateway is running on ${hostname}`);
 });
-app.get('/health', (req, res) => {
+app.get('/health-check', (req, res) => {
   const hostname = os.hostname();
   res.send(`good health on ${hostname}`);
 });
