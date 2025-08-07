@@ -19,6 +19,10 @@ app.get('/', (req, res) => {
   const hostname = os.hostname();
   res.send(`API Gateway is running on ${hostname}`);
 });
+app.get('/health', (req, res) => {
+  const hostname = os.hostname();
+  res.send(`good health on ${hostname}`);
+});
 
 // Test route to confirm gateway is alive
 app.post('/login', (req, res) => {
