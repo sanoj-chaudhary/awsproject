@@ -15,6 +15,10 @@ app.use(bodyParser.json({ limit: '5mb' }))
 //   next();
 // });
 
+app.get('/', (req, res) => {
+  res.send('API Gateway is running'); // Basic health check
+});
+
 // Test route to confirm gateway is alive
 app.post('/login', (req, res) => {
   // console.log(req.body,"sanoj")
