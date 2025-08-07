@@ -46,6 +46,7 @@ app.post('/login', (req, res) => {
 // }));
 
 // Start API Gateway
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`API Gateway running on port ${PORT}`);
 });
+
