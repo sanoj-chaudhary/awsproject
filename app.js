@@ -2,60 +2,52 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const http = require("http");
+const socketIO = require("socket.io");
+const path = require("path");
+const authRoutes = require('./src/routes/auth.routes');
+const userRoutes = require('./src/routes/user.routes');
+const messageRoutes = require('./src/routes/message.routes');
+const chatRoutes = require('./src/routes/chat.routes');
+const cors = require('cors');
+// console.log("🔍 Environment Variables Loaded:", process.env.PORT);
 
-app.use(express.json()); // Important to parse JSON requests
-const bodyParser = require('body-parser');
-const sendAlertToTeams = require('./sendAlert');
-app.use(bodyParser.json({ limit: '5mb' }))
-// Optional: log all incoming requests
-// app.use((req, res, next) => {
-//     console.log(req.body)
-//   console.log(`[Gateway] ${req.method} ${req.originalUrl}`);
-//   next();
-// });
-const os = require('os');
-app.get('/', (req, res) => {
-  const hostname = os.hostname();
-  res.send(`API Gateway is running on ${hostname}`);
+const db = require('./src/models/index');
+// console.log("📦 Sequelize Models:", Object.keys(db));
+
+const socketHandler = require("./src/socket/index");
+app.use(cors({
+    origin: "http://localhost:3003", // React app URL
+    credentials: true // allow cookies / auth headers
+}));
+app.use(express.json());
+// Serve uploaded files
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/messages', messageRoutes);
+app.use('/api/chats', chatRoutes);
+// DB Connection
+db.sequelize.authenticate()
+  .then(() => console.log('✅ MySQL connected'))
+  .catch(err => {
+    console.error('❌ DB connection failed:', err);
+    process.exit(1); // Stop app if DB fails
+  });
+
+// Sync models
+db.sequelize.sync({ alter: false })
+  .then(() => console.log("✅ Models synced"))
+  .catch(err => console.error("❌ Model sync failed:", err));
+
+// Create HTTP server & Socket.IO
+const server = http.createServer(app);
+const io = socketIO(server, { cors: { origin: "*" } });
+
+// Socket.IO events
+socketHandler(io);
+
+// Start server
+server.listen(PORT, () => {
+  console.log(`🚀 API Gateway running on port ${PORT}`);
 });
-app.get('/health-check', (req, res) => {
-  const hostname = os.hostname();
-  res.send(`good health on ${hostname}`);
-});
-
-// Test route to confirm gateway is alive
-app.post('/login', (req, res) => {
-  // console.log(req.body,"sanoj")
-  // sendAlertToTeams('🚨 Error detected in Node.js app on production server!');
-  return res.status(200).json({ status: false, message: "success", data: req.body });
-});
-
-// --- PROXY CONFIGURATIONS ---
-
-// Proxy requests starting with /users to User Service
-// app.use('/users', createProxyMiddleware({
-//   target: 'http://localhost:3001',
-//   changeOrigin: true,
-//   pathRewrite: { '^/users': '' }, // Remove /users when forwarding
-// }));
-
-// // Proxy requests starting with /books to Book Service
-// app.use('/books', createProxyMiddleware({
-//   target: 'http://localhost:3002',
-//   changeOrigin: true,
-//   pathRewrite: { '^/books': '' },
-// }));
-
-// // Proxy requests starting with /orders to Order Service
-// app.use('/orders', createProxyMiddleware({
-//   target: 'http://localhost:3003',
-//   changeOrigin: true,
-//   pathRewrite: { '^/orders': '' },
-// }));
-
-// Start API Gateway
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`API Gateway running on port ${PORT}`);
-});
-
