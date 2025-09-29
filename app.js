@@ -12,7 +12,7 @@ const chatRoutes = require('./src/routes/chat.routes');
 const cors = require('cors');
 // console.log("🔍 Environment Variables Loaded:", process.env.PORT);
 
-const db = require('./src/models/index');
+// const db = require('./src/models/index');
 // console.log("📦 Sequelize Models:", Object.keys(db));
 
 const socketHandler = require("./src/socket/index");
@@ -21,31 +21,34 @@ app.use(cors({
     credentials: true // allow cookies / auth headers
 }));
 app.use(express.json());
+app.get('/', (req, res) => {
+  res.send('Welcome to the Chat API Gateway');
+});
 // Serve uploaded files
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/messages', messageRoutes);
-app.use('/api/chats', chatRoutes);
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use('/api/auth', authRoutes);
+// app.use('/api/users', userRoutes);
+// app.use('/api/messages', messageRoutes);
+// app.use('/api/chats', chatRoutes);
 // DB Connection
-db.sequelize.authenticate()
-  .then(() => console.log('✅ MySQL connected'))
-  .catch(err => {
-    console.error('❌ DB connection failed:', err);
-    process.exit(1); // Stop app if DB fails
-  });
+// db.sequelize.authenticate()
+//   .then(() => console.log('✅ MySQL connected'))
+//   .catch(err => {
+//     console.error('❌ DB connection failed:', err);
+//     process.exit(1); // Stop app if DB fails
+//   });
 
-// Sync models
-db.sequelize.sync({ alter: false })
-  .then(() => console.log("✅ Models synced"))
-  .catch(err => console.error("❌ Model sync failed:", err));
+// // Sync models
+// db.sequelize.sync({ alter: false })
+//   .then(() => console.log("✅ Models synced"))
+//   .catch(err => console.error("❌ Model sync failed:", err));
 
 // Create HTTP server & Socket.IO
-const server = http.createServer(app);
-const io = socketIO(server, { cors: { origin: "*" } });
+// const server = http.createServer(app);
+// const io = socketIO(server, { cors: { origin: "*" } });
 
-// Socket.IO events
-socketHandler(io);
+// // Socket.IO events
+// socketHandler(io);
 
 // Start server
 server.listen(PORT, () => {
