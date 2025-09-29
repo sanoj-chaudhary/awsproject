@@ -51,6 +51,6 @@ app.get('/', (req, res) => {
 // socketHandler(io);
 
 // Start server
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`🚀 API Gateway running on port ${PORT}`);
 });
