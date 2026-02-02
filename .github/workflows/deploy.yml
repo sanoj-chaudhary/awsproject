@@ -40,10 +40,9 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             cd /home/ubuntu/projects/awsproject
-
-            docker compose pull        # 🔥 pull new image
+            docker compose pull
             docker compose down
-            docker compose up -d       # 🔥 recreate containers
-
-            docker image prune -f      # optional cleanup
+            docker compose up -d
+            docker image prune -f
           EOF
+

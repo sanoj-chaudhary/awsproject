@@ -1,11 +1,9 @@
-version: '3.8'
-
 services:
   db:
     image: mysql:8
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 
+      MYSQL_ROOT_PASSWORD:
       MYSQL_DATABASE: awsProject
     ports:
       - "3306:3306"
@@ -13,10 +11,9 @@ services:
       - db_data:/var/lib/mysql
 
   app:
-    image: sanojchaudhary/chat-api:latest   # <- pull from Docker Hub
-    pull_policy: always        # 🔥 FORCE PULL LATEST IMAGE
+    image: sanojchaudhary/chat-api:latest
+    pull_policy: always
     restart: always
-    # restart: always
     depends_on:
       - db
     ports:
@@ -24,7 +21,7 @@ services:
     environment:
       DB_HOST: db
       DB_USER: root
-      DB_PASSWORD: 
+      DB_PASSWORD:
       DB_NAME: awsProject
 
 volumes:
