@@ -1,22 +1,52 @@
+# version: '3.8'
+
+# services:
+#   db:
+#     image: mysql:8
+#     environment:
+#       MYSQL_ROOT_PASSWORD: 
+#       MYSQL_DATABASE: awsProject
+#     ports:
+#       - "3306:3306"
+
+#   app:
+#     image: sanojchaudhary/chat-api:latest
+#     build: .
+#     ports:
+#       - "3000:3000"
+#     depends_on:
+#       - db
+#     environment:
+#       DB_HOST: db
+#       DB_USER: root
+#       DB_PASSWORD: 
+#       DB_NAME: awsProject
 version: '3.8'
 
 services:
   db:
     image: mysql:8
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 
       MYSQL_DATABASE: awsProject
     ports:
       - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
 
   app:
-    build: .
-    ports:
-      - "3000:3000"
+    image: sanojchaudhary/chat-api:latest   # <-- use Docker Hub image for CI/CD
+    restart: always
     depends_on:
       - db
+    ports:
+      - "3000:3000"
     environment:
       DB_HOST: db
       DB_USER: root
       DB_PASSWORD: 
       DB_NAME: awsProject
+
+volumes:
+  db_data:
