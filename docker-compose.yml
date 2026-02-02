@@ -14,7 +14,9 @@ services:
 
   app:
     image: sanojchaudhary/chat-api:latest   # <- pull from Docker Hub
+    pull_policy: always        # 🔥 FORCE PULL LATEST IMAGE
     restart: always
+    # restart: always
     depends_on:
       - db
     ports:
