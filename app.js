@@ -22,7 +22,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.get('/', (req, res) => {
-  res.send('Welcome to the Chat API Gateway v1.o');
+  res.send('Welcome to the Chat API Gateway ');
 });
 const OpenAI = require("openai");
 
