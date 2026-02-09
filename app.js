@@ -57,17 +57,17 @@ const OpenAI = require("openai");
 // app.use('/api/messages', messageRoutes);
 // app.use('/api/chats', chatRoutes);
 // DB Connection
-db.sequelize.authenticate()
-  .then(() => console.log('✅ MySQL connected'))
-  .catch(err => {
-    console.error('❌ DB connection failed:', err);
-    process.exit(1); // Stop app if DB fails
-  });
+// db.sequelize.authenticate()
+//   .then(() => console.log('✅ MySQL connected'))
+//   .catch(err => {
+//     console.error('❌ DB connection failed:', err);
+//     process.exit(1); // Stop app if DB fails
+//   });
 
-// // Sync models
-db.sequelize.sync({ alter: false })
-  .then(() => console.log("✅ Models synced"))
-  .catch(err => console.error("❌ Model sync failed:", err));
+// // // Sync models
+// db.sequelize.sync({ alter: false })
+//   .then(() => console.log("✅ Models synced"))
+//   .catch(err => console.error("❌ Model sync failed:", err));
 
 // Create HTTP server & Socket.IO
 // const server = http.createServer(app);
