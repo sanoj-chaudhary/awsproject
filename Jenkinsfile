@@ -27,13 +27,13 @@ pipeline {
                 sh '''
                     cd $APP_DIR
 
-                    git pull origin $BRANCH
+                    sudo git pull origin $BRANCH
 
-                    npm ci
+                    sudo npm ci
 
-                    pm2 reload $APP_NAME || pm2 start app.js --name $APP_NAME
+                    sudo pm2 reload $APP_NAME || sudo pm2 start app.js --name $APP_NAME
 
-                    pm2 save
+                    sudo pm2 save
                 '''
             }
         }
