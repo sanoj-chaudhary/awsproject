@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        APP_DIR = "/var/www/awsproject"
+        APP_DIR = "/home/ubuntu/var/www/awsproject"
         APP_NAME = "awsproject"
         BRANCH = "main"
     }
