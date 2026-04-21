@@ -22,21 +22,22 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                sh '''
-                    cd $APP_DIR
+       stage('Deploy') {
+    steps {
+        sh '''
+            cd $APP_DIR
 
-                    git pull origin $BRANCH
+            git pull origin $BRANCH
 
-                    npm ci
+            npm ci
 
-                    pm2 restart $APP_NAME || pm2 start app.js --name $APP_NAME
+            sudo -u ubuntu /usr/bin/pm2 restart awsproject --update-env || \
+            sudo -u ubuntu /usr/bin/pm2 start app.js --name awsproject
 
-                    pm2 save
-                '''
-            }
-        }
+            sudo -u ubuntu /usr/bin/pm2 save
+        '''
+    }
+}
 
     }
 
