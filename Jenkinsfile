@@ -31,7 +31,7 @@ pipeline {
 
                     npm ci
 
-                    pm2 reload $APP_NAME || pm2 start app.js --name $APP_NAME
+                    pm2 restart $APP_NAME || pm2 start app.js --name $APP_NAME
 
                     pm2 save
                 '''
