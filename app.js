@@ -23,7 +23,7 @@ app.use(cors({
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Welcome to the Chat API  Gateway! Use /ask to interact with the AI.');
+  res.send('Welcome to the Chat API  Gateway! Use /ask to interact with the AI. sanojchaudhary/chat-api:v2');
 });
 const OpenAI = require("openai");
 
