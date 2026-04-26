@@ -3,8 +3,8 @@ FROM node:latest
 RUN npm install -g nodemon
     WORKDIR /app
 
-    # COPY package*.json ./
-    # RUN npm install --only=production
+    COPY package*.json ./
+    RUN npm install --only=production
 
 COPY . .
 RUN npm install
